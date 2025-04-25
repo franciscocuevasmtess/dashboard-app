@@ -1,0 +1,8 @@
+https://jsonplaceholder.typicode.com/
+
+https://vercel.com/franciscos-projects-398d4ba6
+
+$ npm install react-router-dom
+
+
+$ npm install axios react-router-dom jwt-decode

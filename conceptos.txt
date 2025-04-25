@@ -1,0 +1,135 @@
+1. Conceptos Básicos de React
+React se centra en la creación de componentes reutilizables. Algunos conceptos clave:
+
+Componentes: Bloques de construcción de una aplicación React. Pueden ser funcionales o basados en clases.
+
+JSX: Una sintaxis que permite escribir HTML dentro de JavaScript.
+
+Estado (State): Datos que un componente mantiene y puede cambiar.
+
+Props: Datos que se pasan de un componente padre a un componente hijo.
+
+
+2. Configuración del Entorno
+Para empezar a trabajar con React, necesitas:
+
+Node.js y npm: Asegúrate de tener Node.js instalado. Viene con npm, que es el gestor de paquetes de Node.
+
+Create React App: Una herramienta oficial para crear proyectos React rápidamente.
+
+Ejemplo en el bash:
+$ npx create-react-app mi-primera-app
+$ cd mi-primera-app
+$ npm start
+Esto creará una nueva aplicación React y la ejecutará en http://localhost:3000.
+----------------------------------------------------------------------------------------------------------------
+
+4. Estado y Props
+Estado: Usa useState en componentes funcionales para manejar el estado.
+Props: Pasa datos de un componente a otro.
+----------------------------------------------------------------------------------------------------------------
+
+7. Hooks
+Los Hooks son funciones que te permiten usar estado y otras características de React en componentes funcionales.
+
+useState: Para manejar el estado.
+
+useEffect: Para manejar efectos secundarios (como llamadas a API).
+-----------------------------------------------------------------------------------------------------------------
+
+8. Routing con React Router
+Para manejar la navegación en una aplicación de una sola página (SPA), puedes usar react-router-dom.
+$ npm install react-router-dom
+-----------------------------------------------------------------------------------------------------------------
+
+
+1. ¿Qué es un gestor de paquetes?
+Un gestor de paquetes es una herramienta que te permite instalar, actualizar, eliminar y gestionar 
+paquetes (librerías o dependencias) en tu proyecto. En el caso de Node.js, el gestor de paquetes se llama 
+npm (Node Package Manager).
+
+¿Para qué sirve?
+    * Te permite descargar librerías o herramientas que otras personas han creado y compartido.
+
+    * Facilita la gestión de dependencias (otras librerías que tu proyecto necesita para funcionar).
+
+    * Te ayuda a mantener actualizadas las versiones de las librerías que usas.
+
+Por ejemplo, si quieres usar una librería como React, en lugar de descargarla manualmente, simplemente ejecutas:
+
+Ejemplo:
+$ npm install react
+
+Y npm se encarga de descargar React y todas sus dependencias automáticamente.
+----------------------------------------------------------------------------------------------------------------
+
+2. ¿Qué es un paquete?
+Un paquete es un conjunto de archivos (código, recursos, documentación) que se distribuyen como una unidad. En 
+el contexto de Node.js y npm, un paquete es generalmente una librería o herramienta que puedes usar en 
+tu proyecto.
+
+Ejemplos de paquetes:
+
+React: Una librería para construir interfaces de usuario.
+
+Lodash: Una librería de utilidades para trabajar con arrays, objetos, etc.
+
+Express: Un framework para construir servidores web.
+
+Cada paquete tiene un archivo llamado package.json, que describe el paquete (su nombre, versión, dependencias, etc.).
+----------------------------------------------------------------------------------------------------------------
+
+
+
+3. ¿Qué pasa cuando ejecutas npm start en una aplicación React?
+Cuando ejecutas npm start en una aplicación React creada con Create React App, ocurre lo siguiente:
+
+1. Se inicia un servidor de desarrollo:
+
+    * Create React App configura automáticamente un servidor de desarrollo local.
+
+    * Este servidor está diseñado para trabajar en un entorno de desarrollo, por lo que tiene características 
+    como la recarga automática (hot reloading) cuando haces cambios en el código.
+
+2. Se compila el código:
+
+    * React usa JSX (una sintaxis que mezcla HTML con JavaScript), pero los navegadores no entienden JSX directamente.
+
+    * El servidor de desarrollo compila el código JSX en JavaScript estándar que los navegadores pueden entender.
+
+3. Se abre la aplicación en el navegador:
+
+    * Por defecto, la aplicación se abre en http://localhost:3000.
+
+    * localhost es una dirección que apunta a tu propia computadora.
+
+    * 3000 es el puerto en el que el servidor de desarrollo está escuchando.
+
+4. Recarga automática (Hot Reloading):
+
+    * Si haces cambios en el código de tu aplicación, el servidor de desarrollo detecta esos cambios y 
+    recarga automáticamente la página en el navegador para que veas los resultados al instante.
+
+5 . Entorno de desarrollo optimizado:
+
+    * Create React App configura todo lo necesario para que puedas enfocarte en escribir código sin 
+    preocuparte por la configuración del entorno (webpack, Babel, etc.).
+
+6. Resumen de lo que pasa cuando ejecutas npm start:
+    * Se inicia un servidor local en http://localhost:3000.
+
+    * Tu aplicación React se compila y se sirve en ese servidor.
+
+    * Puedes ver tu aplicación en el navegador y hacer cambios en tiempo real.
+
+Ejemplo práctico:
+Crea una aplicación React con:
+
+$ npx create-react-app mi-app
+$ cd mi-app
+Ejecuta la aplicación:
+
+$ npm start
+Abre tu navegador y ve a http://localhost:3000. Verás la página de inicio de tu aplicación React.
+
+Edita el archivo src/App.js y guarda los cambios. Verás que la página se actualiza automáticamente en el navegador.
