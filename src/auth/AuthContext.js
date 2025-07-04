@@ -1,3 +1,4 @@
+/*
 import React, { createContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 //import { api } from './api';
@@ -40,5 +41,7 @@ export const AuthProvider = ({ children }) => {
             {children}
         </AuthContext.Provider>
     );
-
 };
+
+export default AuthContext;
+*/

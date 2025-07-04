@@ -5,3 +5,30 @@
 body {
   font-family: 'Inter', sans-serif;
 }
+
+/* Asegura que el body ocupe toda la altura */
+/*body, #root {
+  height: 100vh;
+  overflow: hidden;
+}*/
+
+/* Añade esto al final de tu archivo */
+.table-responsive {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Estilos para el modo oscuro de la tabla */
+.dark .table-responsive table {
+  background-color: #1a202c;
+}
+
+.dark .table-responsive th,
+.dark .table-responsive td {
+  color: #e2e8f0;
+  border-color: #2d3748;
+}
+
+.dark .table-responsive tr:hover {
+  background-color: #2d3748;
+}

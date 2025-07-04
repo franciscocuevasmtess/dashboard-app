@@ -1,3 +1,4 @@
+/*
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const cors = require('cors');
@@ -37,3 +38,4 @@ app.get('/api/protected', (req, res) => {
 });
 
 app.listen(5000, () => console.log('Servidor en http://localhost:5000'));
+*/
