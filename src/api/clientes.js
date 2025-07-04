@@ -69,3 +69,20 @@ export const updateCliente = async (id, clienteData) => {
     }
     return await response.json();
 };
+
+
+export const deleteCliente = async (id) => {
+    const response = await fetch(`http://localhost:8080/api/clientes/${id}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    
+    if (!response.ok) {
+        throw new Error('Error al eliminar el cliente');
+    }
+
+    // Si tu backend no devuelve contenido en DELETE
+    return response.status === 204 ? {} : await response.json();
+};

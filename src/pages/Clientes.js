@@ -1,7 +1,7 @@
 // Importaciones necesarias desde React y otras librerías
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion'; // Librería para animaciones
-import { obtenerClientes } from '../api/clientes'; // Función que trae los datos de clientes desde la API
+import { obtenerClientes, deleteCliente } from '../api/clientes'; // Función que trae los datos de clientes desde la API
 import { exportToExcel, exportToPDF, exportToCSV } from '../utils/exportUtils';
 import { 
     DocumentArrowDownIcon, 
@@ -9,10 +9,12 @@ import {
     DocumentTextIcon,
     DocumentIcon, 
     DocumentPlusIcon,
-    PlusCircleIcon
+    PlusCircleIcon, 
+    PencilIcon, 
+    TrashIcon
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
-
+import ConfirmModal from '../components/ConfirmModal';
 
 function Clientes() {
     
@@ -37,6 +39,15 @@ function Clientes() {
         campo: 'nombre',
         direccion: 'asc'
     });
+
+    const [clienteAEliminar, setClienteAEliminar] = useState(null);
+
+    const handleEliminarClick = (clienteId) => {
+        setClienteAEliminar(clienteId);
+    };
+
+    const [eliminando, setEliminando] = useState(false);
+    const [mensajeExito, setMensajeExito] = useState(null);
 
     // useEffect se ejecuta una sola vez al cargar el componente ([])
     useEffect(() => {
@@ -137,6 +148,24 @@ function Clientes() {
             Estado: cliente.estado
         }));
     };
+
+
+    const confirmarEliminacion = async () => {
+        setEliminando(true);
+        setError(null);
+        try {
+            await deleteCliente(clienteAEliminar);
+            setClientes(clientes.filter(c => c.id !== clienteAEliminar));
+            setMensajeExito('Cliente eliminado correctamente');
+            setTimeout(() => setMensajeExito(null), 3000);
+        } catch (err) {
+            setError('Error al eliminar el cliente');
+            console.error(err);
+        } finally {
+            setEliminando(false);
+            setClienteAEliminar(null);
+        }
+    };
     
     // Render del componente
     return (
@@ -180,10 +209,12 @@ function Clientes() {
                 </button>
             </div>
 
-            {/* Botón para crear nuevo cliente */}
+            
             <div className="p-5">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold mb-4">Clientes</h2>
+
+                    {/* Botón para crear nuevo cliente */}
                     <Link 
                         to="/clientes/nuevo"
                         className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
@@ -192,6 +223,16 @@ function Clientes() {
                         Nuevo Cliente
                     </Link>
                 </div>
+
+                <ConfirmModal
+                    isOpen={clienteAEliminar !== null}
+                    onClose={() => setClienteAEliminar(null)}
+                    onConfirm={confirmarEliminacion}
+                    title="Confirmar eliminación"
+                    message="¿Estás seguro que deseas eliminar este cliente? Esta acción no se puede deshacer."
+                    confirmText={eliminando ? "Eliminando..." : "Sí, eliminar"}
+                    cancelText="Cancelar"
+                />
 
                 {error && (
                     <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded">
@@ -301,6 +342,14 @@ function Clientes() {
                                                 >
                                                     Editar
                                                 </Link>
+                                                <button
+                                                    onClick={() => handleEliminarClick(cliente.id)}
+                                                    className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded"
+                                                    title="Eliminar"
+                                                    disabled={eliminando}
+                                                >
+                                                    <TrashIcon className="h-5 w-5" />
+                                                </button>
                                             </td>
                                         </motion.tr>
                                     ))}
