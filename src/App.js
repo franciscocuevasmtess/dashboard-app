@@ -15,6 +15,7 @@ import NuevoCliente from './pages/NuevoCliente';
 import EditarCliente from './pages/EditarCliente';
 import LoginPage from './pages/LoginPage';
 import ClientesPage from './pages/ClientesPage';
+import ListadoDeClientes from './pages/ListadoDeClientes';
 
 /* 
 function App() {
@@ -69,7 +70,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
-          <Route path="/clientes" element={<ClientesPage />} />
+          {/* <Route path="/clientes" element={<ClientesPage />} /> */}
+          <Route path="/clientes" element={<ListadoDeClientes />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
