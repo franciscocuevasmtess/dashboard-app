@@ -12,113 +12,6 @@ export const exportToExcel = (data, fileName = 'clientes') => {
 };
 
 export const exportToPDF = (data, fileName = 'clientes') => {
-    
-    //console.log('Datos a exportar:', JSON.stringify(data, null, 2));
-
-    // Crear nuevo documento PDF
-    //const doc = new jsPDF();
-    
-    // Título
-    //doc.setFontSize(18);
-    //doc.setTextColor(40, 40, 40);
-    //doc.text('Listado de Clientes', 14, 16);
-    
-
-
-    /* // Tabla
-    doc.autoTable({
-        head: [['Nombre', 'Email', 'Empresa', 'Puesto', 'Estado']],
-        body: data.map(item => [
-            item.nombre,
-            item.email,
-            item.empresa,
-            item.puesto,
-            item.estado
-        ]),
-        startY: 20,
-        styles: {
-            cellPadding: 3,
-            fontSize: 10,
-            valign: 'middle',
-            halign: 'left',
-        },
-        headStyles: {
-            fillColor: [41, 128, 185],
-            textColor: 255,
-            fontStyle: 'bold'
-        },
-        alternateRowStyles: {
-            fillColor: [245, 245, 245]
-        }
-    }); */
-    
-    /* // Configurar la tabla
-    autoTable(doc, {
-        head: [['Nombre', 'Email', 'Empresa', 'Puesto', 'Estado']],
-        body: data.map(item => [
-            // item.nombre,
-            item.Nombre,
-            item.Email,
-            item.Empresa,
-            item.Puesto,
-            item.Estado
-        ]),
-        startY: 25, // Espacio después del título
-        margin: { top: 20 },
-        styles: {
-            fontSize: 10,
-            cellPadding: 4,
-            valign: 'middle',
-            halign: 'left',
-        },
-        headStyles: {
-            fillColor: [41, 128, 185],
-            textColor: 255,
-            fontStyle: 'bold'
-        },
-        alternateRowStyles: {
-            fillColor: [245, 245, 245]
-        },
-        didDrawPage: (data) => {
-            // Footer
-            doc.setFontSize(10);
-            doc.setTextColor(150);
-            const pageCount = doc.internal.getNumberOfPages();
-            doc.text(`Página ${data.pageNumber} de ${pageCount}`, data.settings.margin.left, doc.internal.pageSize.height - 10);
-        }
-    }); */
-
-    /* // Importación dinámica para evitar problemas de carga
-    import('jspdf').then(({ jsPDF }) => {
-        import('jspdf-autotable').then((autoTable) => {
-            const doc = new jsPDF();
-            
-            // Título
-            doc.text('Listado de Clientes', 14, 16);
-            
-            // Usar autoTable del plugin cargado
-            autoTable.default(doc, {
-                head: [['Nombre', 'Email', 'Empresa', 'Puesto', 'Estado']],
-                body: data.map(item => [
-                    item.nombre,
-                    item.email,
-                    item.empresa,
-                    item.puesto,
-                    item.estado
-                ]),
-                startY: 20
-            });
-
-            doc.save(`${fileName}.pdf`);
-        });
-    }).catch(error => {
-        console.error('Error al cargar las librerías PDF:', error);
-        alert('Error al generar el PDF. Por favor recarga la página.');
-    }); */
-
-    // Guardar el PDF
-    //doc.save(`${fileName}.pdf`);
-
     try {
         // Validación de datos
         if (!data || !Array.isArray(data) || data.length === 0) {
@@ -147,8 +40,6 @@ export const exportToPDF = (data, fileName = 'clientes') => {
             item.Puesto || 'N/A',
             item.Estado || 'N/A'
         ]);
-
-        //console.log('Datos formateados para tabla:', tableData);
 
         // Crear tabla
         autoTable(doc, {

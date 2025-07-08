@@ -1,30 +1,26 @@
 import React from 'react';
 import axios from 'axios';
-
-/*export const obtenerClientes = async () => {
-    const response = await axios.get('https://jsonplaceholder.typicode.com/users');
-    return response.data.map(cliente => ({
-        id: cliente.id,
-        nombre: cliente.name,
-        email: cliente.email,
-        empresa: cliente.company.name
-    }));
-};*/
-
-export const obtenerClientes = async () => {
-    const response = await axios.get('http://localhost:8080/api/clientes');
-    return response.data.map(cliente => ({
-        id: cliente.id,
-        nombre: cliente.name,
-        email: cliente.email,
-        empresa: cliente.empresa,
-        puesto: cliente.puesto,
-        estado: cliente.estado ? 'Activo' : 'Inactivo' // Conversión del estado
-    }));
-};
-
+import api from './config';
 
 const API_URL = 'http://localhost:8080/api/clientes'; // La URL del backend
+
+export const obtenerClientes = async () => {
+    try {
+        const response = await api.get('/clientes');
+        return response.data.map(cliente => ({
+            id: cliente.id,
+            nombre: cliente.name,
+            email: cliente.email,
+            empresa: cliente.empresa,
+            puesto: cliente.puesto,
+            estado: cliente.estado ? 'Activo' : 'Inactivo'
+        }));
+    } catch (error) {
+        console.error('Error al obtener clientes:', error);
+        throw error;
+    }
+};
+
 export const createCliente = async (clienteData) => {
     try {
         const response = await fetch(API_URL, {
@@ -45,8 +41,6 @@ export const createCliente = async (clienteData) => {
         throw error;
     }
 };
-
-
 
 export const getCliente = async (id) => {
     const response = await fetch(`http://localhost:8080/api/clientes/${id}`);
@@ -69,7 +63,6 @@ export const updateCliente = async (id, clienteData) => {
     }
     return await response.json();
 };
-
 
 export const deleteCliente = async (id) => {
     const response = await fetch(`http://localhost:8080/api/clientes/${id}`, {

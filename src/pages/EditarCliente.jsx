@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getCliente, updateCliente } from '../api/clientes';
+import { getCliente, updateCliente } from '../api/ApiClientes';
 import { ArrowUturnLeftIcon, CheckCircleIcon, ExclamationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
 
 const EditarCliente = () => {
@@ -66,16 +66,6 @@ const EditarCliente = () => {
         } else if (cliente.nombre.length < 3) {
             nuevosErrores.nombre = 'El nombre debe tener al menos 3 caracteres';
         }
-
-        //if (!cliente.email.trim()) {
-        //    nuevosErrores.email = 'El email es requerido';
-        //} else if (!emailRegex.test(cliente.email)) {
-        //    nuevosErrores.email = 'Email no válido';
-        //}
-
-        //if (!cliente.empresa.trim()) {
-        //    nuevosErrores.empresa = 'La empresa es requerida';
-        //}
 
         setErrores(nuevosErrores);
         return Object.keys(nuevosErrores).length === 0;

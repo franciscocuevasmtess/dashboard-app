@@ -1,22 +1,19 @@
 // Importaciones necesarias desde React y otras librerías
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion'; // Librería para animaciones
-import { obtenerClientes, deleteCliente } from '../api/clientes'; // Función que trae los datos de clientes desde la API
+import { motion } from 'framer-motion';                                 // Librería para animaciones
+import { obtenerClientes, deleteCliente } from '../api/ApiClientes';    // Función que trae los datos de clientes desde la API
 import { exportToExcel, exportToPDF, exportToCSV } from '../utils/exportUtils';
 import { 
-    DocumentArrowDownIcon, 
     TableCellsIcon,
     DocumentTextIcon,
     DocumentIcon, 
-    DocumentPlusIcon,
     PlusCircleIcon, 
-    PencilIcon, 
     TrashIcon
 } from '@heroicons/react/24/outline';
 import { Link } from 'react-router-dom';
 import ConfirmModal from '../components/ConfirmModal';
 
-function Clientes() {
+function ListaClientes() {
     
     const [error, setError] = useState(null);
 
@@ -75,12 +72,6 @@ function Clientes() {
         setPaginaActual(1); // Volver a la primera página al cambiar el orden
     };
 
-
-    //// Filtro de búsqueda: Filtrar clientes basado en el término de búsqueda, filtra por nombre o email (case-insensitive)
-    //const filteredClientes = clientes.filter(cliente =>
-    //    cliente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    //    cliente.email.toLowerCase().includes(searchTerm.toLowerCase())
-    //);
     // Filtro de búsqueda: Filtrar clientes basado en el término de búsqueda, filtra por nombre o email (case-insensitive)
     // Filtrar y ordenar clientes
     const filteredClientes = clientes
@@ -110,7 +101,6 @@ function Clientes() {
                 ? campoA - campoB
                 : campoB - campoA;
         });
-
 
     // Cálculos para paginación: Calcular clientes para la página actual
     const indexUltimoCliente = paginaActual * clientesPorPagina;
@@ -148,8 +138,7 @@ function Clientes() {
             Estado: cliente.estado
         }));
     };
-
-
+    
     const confirmarEliminacion = async () => {
         setEliminando(true);
         setError(null);
@@ -208,12 +197,10 @@ function Clientes() {
                     Exportar CSV
                 </button>
             </div>
-
             
             <div className="p-5">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold mb-4">Clientes</h2>
-
                     {/* Botón para crear nuevo cliente */}
                     <Link 
                         to="/clientes/nuevo"
@@ -251,13 +238,6 @@ function Clientes() {
                         <div className="overflow-x-auto">
                             <table className="min-w-full bg-white rounded-lg overflow-hidden">
                                 <thead className="bg-gray-100">
-                                    {/* <tr>
-                                        <th className="py-3 px-4 text-left">Nombre</th>
-                                        <th className="py-3 px-4 text-left">Email</th>
-                                        <th className="py-3 px-4 text-left">Empresa</th>
-                                        <th className="py-3 px-4 text-left">Puesto</th>
-                                        <th className="py-3 px-4 text-left">Estado</th>
-                                    </tr> */}
                                     <tr>
                                         <th 
                                             className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200"
@@ -453,4 +433,4 @@ function Clientes() {
     );
 }
 
-export default Clientes;
+export default ListaClientes;

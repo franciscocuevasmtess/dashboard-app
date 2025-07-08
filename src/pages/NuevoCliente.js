@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createCliente } from '../api/clientes';
 import { 
     ArrowUturnLeftIcon,
     CheckCircleIcon,
@@ -239,15 +238,8 @@ const NuevoCliente = ({ onSubmit }) => {
                 </div>
 
                 <div className="mt-8 flex justify-end">
-                    {/* <button
-                        type="submit"
-                        disabled={enviando}
-                        className={`px-6 py-2 rounded-lg text-white font-medium ${enviando ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'}`}
-                    >
-                        {enviando ? 'Guardando...' : 'Guardar Cliente'}
-                    </button> */}
                     <button 
-                        type="button" // Cambiado de 'submit' a 'button'
+                        type="button"
                             onClick={() => setMostrarConfirmacion(true)}
                             disabled={enviando}
                             className={`px-6 py-2 rounded-lg text-white font-medium ${enviando ? 'bg-blue-400' : 'bg-blue-600 hover:bg-blue-700'}`}
@@ -258,8 +250,6 @@ const NuevoCliente = ({ onSubmit }) => {
             </form>
         </div>
     );
-
 };
-
 
 export default NuevoCliente;
