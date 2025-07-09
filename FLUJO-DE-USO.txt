@@ -1,0 +1,14 @@
+📋 Resumen de cómo fluye la autenticación:
+------------------------------------------
+
+1. Usuario entra en /login.
+
+2. Completa usuario y contraseña.
+
+3. Se llama a signIn() desde useAuth().
+
+4. signIn() llama a login() de auth.js
+
+5. Si éxito → guarda sesión en localStorage y redirige a /clientes.
+
+6. Si ruta /clientes está protegida → pasa si hay sesión.

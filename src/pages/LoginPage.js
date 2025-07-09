@@ -5,6 +5,22 @@ import { ArrowLeftIcon, ExclamationCircleIcon } from '@heroicons/react/24/outlin
 
 const LoginPage = () => {
 
+    /* 
+     * 📝 4. LoginPage.js – Pantalla de Inicio de Sesión 
+     * 
+     * ✅ ¿Qué hace este archivo?
+     * Muestra un formulario de inicio de sesión.
+     * Maneja:
+     *  Inputs de usuario y contraseña.
+     *  Validación básica.
+     *  Estado de carga (isLoading).
+     *  Errores (setError).
+     * Al enviar el formulario:
+     *  Llama a signIn del contexto de autenticación.
+     *  Si es exitoso → redirige a /clientes.
+     *  Si falla → muestra mensaje de error.
+    */
+
     const [username, setUsername] = useState('');    
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
@@ -36,37 +52,6 @@ const LoginPage = () => {
         navigate(-1); // Vuelve a la página anterior
     };
 
-    /*
-    return (
-        <div style={{ maxWidth: '400px', margin: '0 auto', padding: '20px' }}>
-            <h2>Iniciar Sesión</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            <form onSubmit={handleSubmit}>
-                <div style={{ marginBottom: '15px' }}>
-                    <label>Usuario:</label>
-                    <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <div style={{ marginBottom: '15px' }}>
-                    <label>Contraseña:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        style={{ width: '100%', padding: '8px' }}
-                    />
-                </div>
-                <button type="submit" style={{ padding: '10px 15px', background: 'blue', color: 'white', border: 'none' }}>
-                    Ingresar
-                </button>
-            </form>
-        </div>
-    );
-    */
     return (
         <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">

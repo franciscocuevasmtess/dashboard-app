@@ -1,46 +1,10 @@
-// Importaciones necesarias desde React y otras librerías
-import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';                                 // Librería para animaciones
-import { obtenerClientes, deleteCliente } from '../api/ApiClientes';    // Función que trae los datos de clientes desde la API
-import { exportToExcel, exportToPDF, exportToCSV } from '../utils/exportUtils';
-import { 
-    TableCellsIcon,
-    DocumentTextIcon,
-    DocumentIcon, 
-    PlusCircleIcon, 
-    TrashIcon
-} from '@heroicons/react/24/outline';
-import { Link } from 'react-router-dom';
-import ConfirmModal from '../components/ConfirmModal';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
+import {  PlusCircleIcon } from '@heroicons/react/24/outline';
 
-function ListadoDeClientes() {
-    const [error, setError] = useState(null);
-    
-    // Estado para guardar la lista de clientes obtenidos
+const ClientesPage = () => {
     const [clientes, setClientes] = useState([]);
-    // Estado para indicar si los datos están cargando
-    const [cargando, setCargando] = useState(true);
-    // Estado para el término de búsqueda en el input
-    const [searchTerm, setSearchTerm] = useState('');
-    // Estado para la página actual de la paginación
-    const [paginaActual, setPaginaActual] = useState(1);
-    // Cantidad fija de clientes a mostrar por página
-    const [clientesPorPagina] = useState(10); // Cantidad de items por página
-    
-    const [orden, setOrden] = useState({
-        campo: 'nombre',
-        direccion: 'asc'
-    });
-    
-    const [clienteAEliminar, setClienteAEliminar] = useState(null);
-
-    const handleEliminarClick = (clienteId) => {
-        setClienteAEliminar(clienteId);
-    };
-    
-    const [eliminando, setEliminando] = useState(false);
-    const [mensajeExito, setMensajeExito] = useState(null);
     const [loading, setLoading] = useState(true);
     const { auth } = useAuth();
 
@@ -64,100 +28,8 @@ function ListadoDeClientes() {
         fetchClientes();
     }, [auth]);
 
-    // Función para manejar el ordenamiento
-    const manejarOrden = (campo) => {
-        setOrden(prev => ({
-            campo,
-            direccion: prev.campo === campo && prev.direccion === 'asc' ? 'desc' : 'asc'
-        }));
-        setPaginaActual(1); // Volver a la primera página al cambiar el orden
-    };
-    
-    // Filtro de búsqueda: Filtrar clientes basado en el término de búsqueda, filtra por nombre o email (case-insensitive)
-    // Filtrar y ordenar clientes
-    const filteredClientes = clientes
-        .filter(cliente =>
-            cliente.nombre.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            cliente.email.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-        .sort((a, b) => {
-            // Ordenamiento por campo seleccionado
-            const campoA = a[orden.campo];
-            const campoB = b[orden.campo];
-            
-            // Comparación para strings
-            if (typeof campoA === 'string') {
-                return orden.direccion === 'asc'
-                    ? campoA.localeCompare(campoB)
-                    : campoB.localeCompare(campoA);
-            }
-            // Comparación para booleanos (estado)
-            else if (typeof campoA === 'boolean') {
-                return orden.direccion === 'asc'
-                    ? (campoA === campoB ? 0 : campoA ? -1 : 1)
-                    : (campoA === campoB ? 0 : campoA ? 1 : -1);
-            }
-            // Comparación por defecto
-            return orden.direccion === 'asc'
-                ? campoA - campoB
-                : campoB - campoA;
-        });
-    
-    // Cálculos para paginación: Calcular clientes para la página actual
-    const indexUltimoCliente = paginaActual * clientesPorPagina;
-    const indexPrimerCliente = indexUltimoCliente - clientesPorPagina;
-    
-    // Clientes que se mostrarán en la página actual
-    const clientesPaginaActual = filteredClientes.slice(indexPrimerCliente, indexUltimoCliente);
-    
-    // Total de páginas a mostrar según cantidad filtrada
-    const totalPaginas = Math.ceil(filteredClientes.length / clientesPorPagina);
-    
-    // Funciones de control de paginación:
-    const paginar = (numeroPagina) => setPaginaActual(numeroPagina);
-    const paginaAnterior = () => setPaginaActual(prev => Math.max(prev - 1, 1));
-    const paginaSiguiente = () => setPaginaActual(prev => Math.min(prev + 1, totalPaginas));
-        
-    // Permitir al usuario hacer clic en el encabezado de una columna para ordenar por esa columna (ascendente o descendente).
-    // Componente para el indicador de orden
-    const IndicadorOrden = ({ campo }) => {
-        if (orden.campo !== campo) return null;
-        return (
-            <span className="ml-1">
-                {orden.direccion === 'asc' ? '↑' : '↓'}
-            </span>
-        );
-    };
-    
-    // Función para preparar datos para exportación
-    const prepararDatosExportacion = () => {
-        return filteredClientes.map(cliente => ({
-            Nombre: cliente.nombre,
-            Email: cliente.email,
-            Empresa: cliente.empresa,
-            Puesto: cliente.puesto,
-            Estado: cliente.estado
-        }));
-    };
-        
-    const confirmarEliminacion = async () => {
-        setEliminando(true);
-        setError(null);
-        try {
-            await deleteCliente(clienteAEliminar);
-            setClientes(clientes.filter(c => c.id !== clienteAEliminar));
-            setMensajeExito('Cliente eliminado correctamente');
-            setTimeout(() => setMensajeExito(null), 3000);
-        } catch (err) {
-            setError('Error al eliminar el cliente');
-            console.error(err);
-        } finally {
-            setEliminando(false);
-            setClienteAEliminar(null);
-        }
-    };
+    if (loading) return <p>Cargando clientes...</p>;
 
-    // Render del componente
     return (
         <div className="p-4">
             {/* Input de búsqueda */}
@@ -166,16 +38,16 @@ function ListadoDeClientes() {
                     type="text"
                     placeholder="Buscar clientes..."
                     className="w-full md:w-1/3 p-2 border rounded-lg"
-                    value={searchTerm}
+                    /* value={searchTerm}
                     onChange={(e) => {
                         setSearchTerm(e.target.value);  // Actualiza el término de búsqueda
                         setPaginaActual(1); // Reinicia la página a la 1 cuando se filtra
-                    }}
+                    }} */
                 />
             </div>
 
             {/* Botones de exportación */}
-            <div className="flex flex-wrap gap-2">
+            {/* <div className="flex flex-wrap gap-2">
                 <button
                     onClick={() => exportToExcel(prepararDatosExportacion(), 'clientes')}
                     className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
@@ -197,8 +69,8 @@ function ListadoDeClientes() {
                     <DocumentIcon className="h-5 w-5" />
                     Exportar CSV
                 </button>
-            </div>
-            
+            </div> */}
+
             <div className="p-5">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold mb-4">Clientes</h2>
@@ -212,7 +84,7 @@ function ListadoDeClientes() {
                     </Link>
                 </div>
 
-                <ConfirmModal
+                {/* <ConfirmModal
                     isOpen={clienteAEliminar !== null}
                     onClose={() => setClienteAEliminar(null)}
                     onConfirm={confirmarEliminacion}
@@ -220,21 +92,21 @@ function ListadoDeClientes() {
                     message="¿Estás seguro que deseas eliminar este cliente? Esta acción no se puede deshacer."
                     confirmText={eliminando ? "Eliminando..." : "Sí, eliminar"}
                     cancelText="Cancelar"
-                />
+                /> */}
 
-                {error && (
+                {/* {error && (
                     <div className="mb-4 p-3 bg-red-100 text-red-700 border border-red-300 rounded">
                         {error}
                     </div>
-                )}
+                )} */}
 
                 {/* Indicador de carga mientras se obtienen datos */}
-                {cargando ? (
+                {/* {cargando ? (
                     <div className="flex justify-center">
                         <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
                     </div>
                 ) : (
-                    <>
+                    <> */}
                         {/* Tabla de clientes */}
                         <div className="overflow-x-auto">
                             <table className="min-w-full bg-white rounded-lg overflow-hidden">
@@ -242,47 +114,47 @@ function ListadoDeClientes() {
                                     <tr>
                                         <th 
                                             className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200"
-                                            onClick={() => manejarOrden('nombre')}
+                                            /* onClick={() => manejarOrden('nombre')} */
                                         >
                                             <div className="flex items-center">
                                                 Nombre
-                                                <IndicadorOrden campo="nombre" />
+                                                {/* <IndicadorOrden campo="nombre" /> */}
                                             </div>
                                         </th>
                                         <th 
                                             className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200"
-                                            onClick={() => manejarOrden('email')}
+                                            /* onClick={() => manejarOrden('email')} */
                                         >
                                             <div className="flex items-center">
                                                 Email
-                                                <IndicadorOrden campo="email" />
+                                                {/* <IndicadorOrden campo="email" /> */}
                                             </div>
                                         </th>
                                         <th 
                                             className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200"
-                                            onClick={() => manejarOrden('empresa')}
+                                            /* onClick={() => manejarOrden('empresa')} */
                                         >
                                             <div className="flex items-center">
                                                 Empresa
-                                                <IndicadorOrden campo="empresa" />
+                                                {/* <IndicadorOrden campo="empresa" /> */}
                                             </div>
                                         </th>
                                         <th 
                                             className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200"
-                                            onClick={() => manejarOrden('puesto')}
+                                            /* onClick={() => manejarOrden('puesto')} */
                                         >
                                             <div className="flex items-center">
                                                 Puesto
-                                                <IndicadorOrden campo="puesto" />
+                                                {/* <IndicadorOrden campo="puesto" /> */}
                                             </div>
                                         </th>
                                         <th 
                                             className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200"
-                                            onClick={() => manejarOrden('estado')}
+                                            /* onClick={() => manejarOrden('estado')} */
                                         >
                                             <div className="flex items-center">
                                                 Estado
-                                                <IndicadorOrden campo="estado" />
+                                                {/* <IndicadorOrden campo="estado" /> */}
                                             </div>
                                         </th>
                                         <th className="py-3 px-4 text-left cursor-pointer hover:bg-gray-200">
@@ -293,7 +165,7 @@ function ListadoDeClientes() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {clientesPaginaActual.map(cliente => (
+                                    {/* {clientesPaginaActual.map(cliente => (
                                         // Cada fila tiene animación al aparecer usando Framer Motion
                                         <motion.tr 
                                             key={cliente.id} 
@@ -307,7 +179,7 @@ function ListadoDeClientes() {
                                             <td className="py-3 px-4">{cliente.empresa}</td>
                                             <td className="py-3 px-4">{cliente.puesto}</td>
                                             <td className="py-3 px-4">
-                                                {/* Badge de estado con color según "Activo" o "Inactivo" */}
+                                                {/* Badge de estado con color según "Activo" o "Inactivo" *
                                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                                                     cliente.estado === 'Activo' 
                                                         ? 'bg-green-100 text-green-800' 
@@ -333,14 +205,14 @@ function ListadoDeClientes() {
                                                 </button>
                                             </td>
                                         </motion.tr>
-                                    ))}
+                                    ))} */}
                                 </tbody>
                             </table>
                         </div>
 
                         {/* Controles de paginación */}
-                        <div className="flex items-center justify-between mt-4">
-                            {/* Info de resultados visibles */}
+                        {/* <div className="flex items-center justify-between mt-4">
+                            {/* Info de resultados visibles *
                             <div className="text-sm text-gray-500">
                                 Mostrando <span className="font-medium">{indexPrimerCliente + 1}</span> a{' '}
                                 <span className="font-medium">
@@ -349,9 +221,9 @@ function ListadoDeClientes() {
                                 <span className="font-medium">{filteredClientes.length}</span> resultados
                             </div>
                             
-                            {/* Botones de paginación */}
+                            {/* Botones de paginación *
                             <div className="flex space-x-2">
-                                {/* Botón anterior */}
+                                {/* Botón anterior *
                                 <button
                                     onClick={paginaAnterior}
                                     disabled={paginaActual === 1}
@@ -364,7 +236,7 @@ function ListadoDeClientes() {
                                     Anterior
                                 </button>
                                 
-                                {/* Botones de número de página */}
+                                {/* Botones de número de página *
                                 <div className="hidden sm:flex space-x-1">
                                     {Array.from({ length: Math.min(5, totalPaginas) }, (_, i) => {
                                         let pagina;
@@ -394,7 +266,7 @@ function ListadoDeClientes() {
                                         );
                                     })}
 
-                                    {/* Puntos suspensivos y botón para última página */}
+                                    {/* Puntos suspensivos y botón para última página *
                                     {totalPaginas > 5 && paginaActual < totalPaginas - 2 && (
                                         <span className="px-3 py-1">...</span>
                                     )}
@@ -413,7 +285,7 @@ function ListadoDeClientes() {
                                     )}
                                 </div>
                                 
-                                {/* Botón siguiente */}
+                                {/* Botón siguiente *
                                 <button
                                     onClick={paginaSiguiente}
                                     disabled={paginaActual === totalPaginas}
@@ -426,13 +298,24 @@ function ListadoDeClientes() {
                                     Siguiente
                                 </button>
                             </div>
-                        </div>
-                    </>
-                )}
+                        </div> */}
+
+                    {/* </>
+                )} */}
+                
+                <h2>Lista de Clientes2</h2>
+                <ul>
+                    {clientes.map(cliente => (
+                        <li key={cliente.id}>
+                            {cliente.name} - {cliente.email}
+                        </li>
+                    ))}
+                </ul>
+
             </div>
+
         </div>
     );
-    
-}
+};
 
-export default ListadoDeClientes;
+export default ClientesPage;
