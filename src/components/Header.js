@@ -6,12 +6,6 @@ import { ThemeContext } from '../context/ThemeContext';
 function Header() {
   const { theme, toggleTheme } = useContext(ThemeContext);
 
-  /* return (
-    <header className="bg-gray-800 text-white p-5 text-center">
-      <h1 className="text-2xl font-bold">Dashboard</h1>
-    </header>
-  ); */
-
   return (
     <header className="bg-gray-800 dark:bg-gray-900 text-white p-4 flex justify-between items-center shadow-md">
       <h1 className="text-xl font-bold">Dashboard Pro</h1>

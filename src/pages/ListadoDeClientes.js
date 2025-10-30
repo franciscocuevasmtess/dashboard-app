@@ -4,10 +4,14 @@ import { Link } from 'react-router-dom';
 import {  PlusCircleIcon } from '@heroicons/react/24/outline';
 
 const ClientesPage = () => {
+
     const [clientes, setClientes] = useState([]);
+    
     const [loading, setLoading] = useState(true);
+    
     const { auth } = useAuth();
 
+    
     useEffect(() => {
         const fetchClientes = async () => {
             try {
@@ -18,6 +22,7 @@ const ClientesPage = () => {
                 });
                 const data = await response.json();
                 setClientes(data);
+                console.log("Clientes2: "+data)
             } catch (error) {
                 console.error('Error:', error);
             } finally {

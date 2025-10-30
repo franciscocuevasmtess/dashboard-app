@@ -6,3 +6,16 @@ $ npm install react-router-dom
 
 
 $ npm install axios react-router-dom jwt-decode
+
+
+
+
+
+src\App.js
+src\context\AuthContext.js
+src\components\ProtectedRoute.js
+src\pages\LoginPage.js
+src\api\auth.js
+src\pages\ClientesPage.js
+src\pages\ListadoDeClientes.js
+src\pages\ListaClientes.js
